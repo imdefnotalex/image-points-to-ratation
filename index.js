@@ -10,8 +10,10 @@ const angleDisplay = document.getElementById("angle");
 const statusDisplay = document.getElementById("status");
 const intervallToleranceInput = document.getElementById("intervall-tolerance");
 
-intervallToleranceInput.onchange = e => localStorage.setItem("intervallToleranceInput", e.target.value)
-intervallToleranceInput.value = parseFloat(localStorage.getItem("intervallToleranceInput")) || 0.7
+intervallToleranceInput.onchange = (e) =>
+  localStorage.setItem("intervallToleranceInput", e.target.value);
+intervallToleranceInput.value =
+  parseFloat(localStorage.getItem("intervallToleranceInput")) || 0.7;
 
 let videoStream = null;
 let useVideo = false;
@@ -115,12 +117,18 @@ function checkEqualIntervals(red, pink, green) {
   const dPG = distance(pink, green);
   const dRG = distance(red, green);
 
-  const tolerance = parseFloat(intervallToleranceInput.value) ?? intervallTolerance;
+  const tolerance =
+    parseFloat(intervallToleranceInput.value) ?? intervallTolerance;
 
   const min = 1 - tolerance;
   const max = 1 + tolerance;
 
-  return (dPG > dRP * min && dPG < dRP * max) && (dRG > dRP * min * 2 && dRG < dRP * max * 2);
+  return (
+    dPG > dRP * min &&
+    dPG < dRP * max &&
+    dRG > dRP * min * 2 &&
+    dRG < dRP * max * 2
+  );
 }
 
 // Compute the rotation (in degrees) required so that the line from the pink center toward red rotates to point at the mouse.
@@ -236,14 +244,17 @@ function processFrame() {
         // )}, ${middleFront.y.toFixed(2)})`;
 
         if (Math.abs(rotation) < 90) {
-          coordsDisplay.textContent = `The boat have to rotate ${rotation > 0 ? "right" : "left"
-            } with factor ${Math.round((Math.abs(rotation) / 180) * 100)}%`;
+          coordsDisplay.textContent = `The boat have to rotate ${
+            rotation > 0 ? "right" : "left"
+          } with factor ${Math.round((Math.abs(rotation) / 180) * 100)}%`;
         } else {
-          coordsDisplay.textContent = `The boat have to turn ${rotation > 0 ? "right" : "left"
-            } and then rotate ${rotation > 0 ? "right" : "left"
-            } with factor ${Math.round(
-              ((Math.abs(rotation) - 90) / 180) * 100
-            )}%`;
+          coordsDisplay.textContent = `The boat have to turn ${
+            rotation > 0 ? "right" : "left"
+          } and then rotate ${
+            rotation > 0 ? "right" : "left"
+          } with factor ${Math.round(
+            ((Math.abs(rotation) - 90) / 180) * 100
+          )}%`;
         }
 
         angleDisplay.textContent = `Rotation to point toward mouse: ${rotation.toFixed(
@@ -268,7 +279,7 @@ function processFrame() {
 async function startVideo() {
   try {
     videoStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" }
+      video: { facingMode: "environment" },
     });
 
     video.srcObject = videoStream;
